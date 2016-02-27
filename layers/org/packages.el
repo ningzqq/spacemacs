@@ -223,15 +223,6 @@ Will work on both org-mode and any mode that accepts plain html."
         "xu" (spacemacs|org-emphasize spacemacs/org-underline ?_)
         "xv" (spacemacs|org-emphasize spacemacs/org-verbose ?=))
 
-      (with-eval-after-load 'org-agenda
-        (define-key org-agenda-mode-map "j" 'org-agenda-next-line)
-        (define-key org-agenda-mode-map "k" 'org-agenda-previous-line)
-        ;; Since we override SPC, let's make RET do that functionality
-        (define-key org-agenda-mode-map
-          (kbd "RET") 'org-agenda-show-and-scroll-up)
-        (define-key org-agenda-mode-map
-          (kbd "SPC") spacemacs-default-map))
-
       ;; Add global evil-leader mappings. Used to access org-agenda
       ;; functionalities – and a few others commands – from any other mode.
       (spacemacs/declare-prefix "ao" "org")
@@ -251,9 +242,7 @@ Will work on both org-mode and any mode that accepts plain html."
         "aol" 'org-store-link))
     :config
     (progn
-      ;; setup org directory
-      (unless (file-exists-p org-directory)
-        (make-directory org-directory))
+      (setq org-default-notes-file "notes.org")
       (font-lock-add-keywords
        'org-mode '(("\\(@@html:<kbd>@@\\) \\(.*\\) \\(@@html:</kbd>@@\\)"
                     (1 font-lock-comment-face prepend)
@@ -263,6 +252,7 @@ Will work on both org-mode and any mode that accepts plain html."
       (require 'org-indent)
       (define-key global-map "\C-cl" 'org-store-link)
       (define-key global-map "\C-ca" 'org-agenda)
+      (define-key global-map "\C-cc" 'org-capture)
 
       ;; Open links and files with RET in normal state
       (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point)
